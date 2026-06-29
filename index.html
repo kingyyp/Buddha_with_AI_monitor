@@ -1033,7 +1033,6 @@
         async function enableWebcam() {
                 // Let FocusMonitor (MediaPipe Camera) handle getUserMedia to avoid device conflicts.
                 try {
-                    webcamVideo.style.display = 'block';
                     enableWebcamBtn.style.display = 'none';
                     disableWebcamBtn.style.display = 'inline-block';
                     if (typeof startMeditation === 'function' && !monitorStarted) {
@@ -1268,7 +1267,11 @@ class FocusMonitor {
 
     // 4. 當使用者點擊「開始修行」時啟動鏡頭與 AI
     function startMeditation() {
-        monitor.init('webcam-video-id').then(() => {
+        if (!window.monitor) {
+            console.error('monitor 未初始化');
+            return;
+        }
+        window.monitor.init('webcam-video-id').then(() => {
             monitorStarted = true;
             console.log("AI 修行監察系統已成功啟動！");
         }).catch(err => console.error('Monitor init failed', err));
